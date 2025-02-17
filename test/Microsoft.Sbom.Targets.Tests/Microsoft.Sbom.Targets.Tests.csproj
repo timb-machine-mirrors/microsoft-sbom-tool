@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net8.0;net472</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net8.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
@@ -19,6 +20,11 @@
     <PackageReference Include="Microsoft.Build.Framework" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" />
     <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Pinned assemblies for transitive dependencies -->
+    <PackageReference Condition="'$(TargetFramework)'=='net472'" Include="Microsoft.IO.Redist" /> <!-- Used by Microsoft.Build -->
   </ItemGroup>
 
   <Target Name="AddSbomToolToPackage" AfterTargets="Build" Condition="$(TargetFramework) == 'net472'">

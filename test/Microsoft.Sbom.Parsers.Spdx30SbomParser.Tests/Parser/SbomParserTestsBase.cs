@@ -207,7 +207,7 @@ public abstract class SbomParserTestsBase
 
             var fileHasSha256Hash = fileElement.VerifiedUsing.
                 Any(packageVerificationCode => packageVerificationCode.Algorithm ==
-                Parsers.Spdx30SbomParser.Entities.Enums.HashAlgorithm.sha256);
+                HashAlgorithm.sha256);
 
             if (!fileHasSha256Hash)
             {
@@ -230,7 +230,7 @@ public abstract class SbomParserTestsBase
 
             var packageHasSha256Hash = packageElement.VerifiedUsing.
                 Any(packageVerificationCode => packageVerificationCode.Algorithm ==
-                Parsers.Spdx30SbomParser.Entities.Enums.HashAlgorithm.sha256);
+                HashAlgorithm.sha256);
 
             if (!packageHasSha256Hash)
             {
@@ -243,9 +243,10 @@ public abstract class SbomParserTestsBase
     /// Sets metadata based on parsed SBOM elements.
     /// </summary>
     /// <param name="result"></param>
-    public SpdxMetadata SetMetadata(ParserResults result)
+    public Spdx22Metadata SetMetadata(ParserResults result)
     {
-        var metadata = new SpdxMetadata();
+        // TODO: Eventually this return type should be changed to SpdxMetadata to be consistent with naming.
+        var metadata = new Spdx22Metadata();
         var spdxDocumentElement = (SpdxDocument?)result.FormatEnforcedSPDX3Result.Graph.FirstOrDefault(element => element.Type == "SpdxDocument");
 
         if (spdxDocumentElement == null)
