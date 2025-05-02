@@ -81,4 +81,11 @@ public class ValidationArgs : GenerationAndValidationCommonArgs
     /// </summary>
     [ArgDescription("The Hash algorithm to use while verifying or generating the hash value of a file")]
     public AlgorithmName HashAlgorithm { get; set; }
+
+    /// <summary>
+    /// The conformance to validate against.
+    /// </summary>
+    [ArgDescription("The conformance to validate against")]
+    [ArgShortcut("cs")]
+    public ConformanceType Conformance { get; set; }
 }

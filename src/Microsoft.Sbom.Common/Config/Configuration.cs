@@ -16,7 +16,7 @@ namespace Microsoft.Sbom.Common.Config;
 
 [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:Static readonly fields should begin with upper-case letter", Justification = "Private fields with the same name as public properties.")]
 [SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "This is the configuration class")]
-public class Configuration : IConfiguration2
+public class Configuration : IConfiguration
 {
     private static readonly AsyncLocal<ConfigurationSetting<string>> buildDropPath = new();
     private static readonly AsyncLocal<ConfigurationSetting<string>> buildComponentPath = new();
@@ -47,13 +47,14 @@ public class Configuration : IConfiguration2
     private static readonly AsyncLocal<ConfigurationSetting<string>> generationTimestamp = new();
     private static readonly AsyncLocal<ConfigurationSetting<bool>> followSymlinks = new();
     private static readonly AsyncLocal<ConfigurationSetting<bool>> fetchLicenseInformation = new();
-    private static readonly AsyncLocal<ConfigurationSetting<int>> licenseInformationTimeout = new();  // IConfiguration2
+    private static readonly AsyncLocal<ConfigurationSetting<int>> licenseInformationTimeout = new();
     private static readonly AsyncLocal<ConfigurationSetting<bool>> enablePackageMetadataParsing = new();
     private static readonly AsyncLocal<ConfigurationSetting<bool>> deleteManifestDirIfPresent = new();
     private static readonly AsyncLocal<ConfigurationSetting<bool>> failIfNoPackages = new();
     private static readonly AsyncLocal<ConfigurationSetting<LogEventLevel>> verbosity = new();
     private static readonly AsyncLocal<ConfigurationSetting<string>> sbomPath = new();
     private static readonly AsyncLocal<ConfigurationSetting<string>> sbomDir = new();
+    private static readonly AsyncLocal<ConfigurationSetting<ConformanceType>> conformance = new();
 
     /// <inheritdoc cref="IConfiguration.BuildDropPath" />
     [DirectoryExists]
@@ -137,6 +138,7 @@ public class Configuration : IConfiguration2
     }
 
     /// <inheritdoc cref="IConfiguration.ManifestInfo" />
+    [ValidManifestInfo]
     public ConfigurationSetting<IList<ManifestInfo>> ManifestInfo
     {
         get => manifestInfo.Value;
@@ -310,7 +312,7 @@ public class Configuration : IConfiguration2
         set => fetchLicenseInformation.Value = value;
     }
 
-    /// <inheritdoc cref="IConfiguration2.LicenseInformationTimeoutInSeconds" />
+    /// <inheritdoc cref="IConfiguration.LicenseInformationTimeoutInSeconds" />
     [DefaultValue(Constants.DefaultLicenseFetchTimeoutInSeconds)]
     public ConfigurationSetting<int> LicenseInformationTimeoutInSeconds
     {
@@ -338,5 +340,12 @@ public class Configuration : IConfiguration2
     {
         get => sbomDir.Value;
         set => sbomDir.Value = value;
+    }
+
+    /// <inheritdoc cref="IConfiguration.Conformance" />
+    public ConfigurationSetting<ConformanceType> Conformance
+    {
+        get => conformance.Value;
+        set => conformance.Value = value;
     }
 }
